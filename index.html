@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Higher or Lower</title>
+</head>
+<body>
+    <h1>Higher or Lower</h1>
+    <div class="game-container">
+        <div class="side" id="left-side">
+            <div class="object-name" id="left-object">{{ game_data['item1'] }}</div>
+        </div>
+        <div class="divider"></div>
+        <div class="side" id="right-side">
+            <div class="object-name" id="right-object">{{ game_data['item2'] }}</div>
+        </div>
+    </div>
+    <div class="category" id="category">Category: {{ game_data['unit'] }}</div>
+    <div class="buttons">
+        <button id="higher-button">Higher</button>
+        <button id="lower-button">Lower</button>
+    </div>
+    <div class="score">Score: <span id="score">{{ score }}</span></div>
+
+    <script>
+        const higherButton = document.getElementById('higher-button');
+        const lowerButton = document.getElementById('lower-button');
+        const scoreElement = document.getElementById('score');
+        const leftObject = document.getElementById('left-object');
+        const rightObject = document.getElementById('right-object');
+        const category = document.getElementById('category');
+
+        function updateGame(data) {
+            leftObject.textContent = data.game_data.item1;
+            rightObject.textContent = data.game_data.item2;
+            category.textContent = "Category: " + data.game_data.unit;
+            scoreElement.textContent = data.score;
+        }
+
+        higherButton.addEventListener('click', () => {
+            fetch('/check_answer', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ choice: 'higher' })
+            })
+                .then(response => response.json())
+                .then(data => updateGame(data));
+        });
+
+        lowerButton.addEventListener('click', () => {
+            fetch('/check_answer', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ choice: 'lower' })
+            })
+                .then(response => response.json())
+                .then(data => updateGame(data));
+        });
+        //Your modal Javascript.
+    </script>
+</body>
+</html>
