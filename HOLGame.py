@@ -4,7 +4,7 @@ from google import genai
 
 app = Flask(__name__, static_folder='static')
 
-client = genai.Client(api_key="AIzaSyB0S1K3dYz0LCeFyL2aw5c5foI2mxJXs5M")
+client = genai.Client(api_key="[ENTER YOUR GEMINI API KEY HERE!]")
 
 item_list = [
     "food",
