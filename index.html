@@ -7,16 +7,18 @@
     <link rel="stylesheet" type="text/css" href="/static/styles.css">
 </head>
 <body>
-    <h1>Higher or Lower Game</h1>
+    <h1>Higher or Lower</h1>
     <div class="game-container">
         <div class="side" id="left-side">
             <div class="object-name" id="left-object">{{ game_data['item1'] }}</div>
             <div class="emoji" id="left-emoji">{{ game_data['emoji1'] }}</div>
+            <div class="value" id="left-value">???</div> <!-- Hidden value -->
         </div>
         <div class="divider"></div>
         <div class="side" id="right-side">
             <div class="object-name" id="right-object">{{ game_data['item2'] }}</div>
             <div class="emoji" id="right-emoji">{{ game_data['emoji2'] }}</div>
+            <div class="value" id="right-value">{{ game_data['value2'] }} {{ game_data['unit'] }}</div> <!-- Visible value -->
         </div>
     </div>
     <div class="category" id="category">Category: {{ game_data['attribute'] }}</div>
@@ -68,6 +70,8 @@
         const rightObject = document.getElementById('right-object');
         const leftEmoji = document.getElementById('left-emoji');
         const rightEmoji = document.getElementById('right-emoji');
+        const leftValue = document.getElementById('left-value');
+        const rightValue = document.getElementById('right-value');
         const category = document.getElementById('category');
 
         function updateGame(data) {
@@ -75,7 +79,9 @@
             rightObject.textContent = data.game_data.item2;
             leftEmoji.textContent = data.game_data.emoji1;
             rightEmoji.textContent = data.game_data.emoji2;
-            category.textContent = "Category: " + data.game_data.unit;
+            leftValue.textContent = "???"; // Keep left-side value hidden
+            rightValue.textContent = `${data.game_data.value2} ${data.game_data.unit}`;
+            category.textContent = "Category: " + data.game_data.attribute;
             scoreElement.textContent = data.score;
         }
 
