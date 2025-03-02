@@ -5,11 +5,11 @@ Instructions for installation:
 0. For this example, we used the Windows version of VSCode.
 
 1. Install listed libraries with the following commands:
-  pip install google-genai
+  pip install google
 
   pip install flask
 
-  pip install google
+  pip install google-genai
 
 2. Generate an API Key via Google Gemini (This is free!!!)
 
