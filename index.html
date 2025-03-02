@@ -4,38 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Higher or Lower</title>
+    <link rel="stylesheet" type="text/css" href="/static/styles.css">
 </head>
 <body>
-    <h1>Higher or Lower</h1>
+    <h1>Higher or Lower Game</h1>
     <div class="game-container">
         <div class="side" id="left-side">
             <div class="object-name" id="left-object">{{ game_data['item1'] }}</div>
+            <div class="emoji" id="left-emoji">{{ game_data['emoji1'] }}</div>
         </div>
         <div class="divider"></div>
         <div class="side" id="right-side">
             <div class="object-name" id="right-object">{{ game_data['item2'] }}</div>
+            <div class="emoji" id="right-emoji">{{ game_data['emoji2'] }}</div>
         </div>
     </div>
-    <div class="category" id="category">Category: {{ game_data['unit'] }}</div>
+    <div class="category" id="category">Category: {{ game_data['attribute'] }}</div>
     <div class="buttons">
         <button id="higher-button">Higher</button>
         <button id="lower-button">Lower</button>
     </div>
     <div class="score">Score: <span id="score">{{ score }}</span></div>
 
+    <!-- How to Play Button -->
+    <button id="how-to-play-btn">How to Play</button>
+
+    <!-- Sliding Window -->
+    <div id="how-to-play-window">
+        <h2>How to Play</h2>
+        <p>This is a simple game of Higher or Lower with a twist. Each round, an AI model will decide on two nouns, an attribute, and the numerical attribute of that value. Your job is to decide if the attribute of noun one is higher or lower than the attribute of noun two. The category changes every round so be careful. Expect abnormalities in the numerical values as AI can be wrong! Have fun!</p>
+        <button id="close-btn">Close</button>
+    </div>
+
+    <!-- Game Over Overlay -->
+    <div class="overlay" id="game-over-overlay">
+        <div class="message">Game Over</div>
+        <button id="play-again-button">Play Again</button>
+    </div>
+
     <script>
+        // Get elements
+        const howToPlayBtn = document.getElementById('how-to-play-btn');
+        const howToPlayWindow = document.getElementById('how-to-play-window');
+        const closeBtn = document.getElementById('close-btn');
+        const gameOverOverlay = document.getElementById('game-over-overlay');
+        const playAgainButton = document.getElementById('play-again-button');
+
+        // Show the window when the button is clicked
+        howToPlayBtn.addEventListener('click', () => {
+            howToPlayWindow.style.left = '0'; // Slide the window in
+        });
+
+        // Close the window when the close button is clicked
+        closeBtn.addEventListener('click', () => {
+            howToPlayWindow.style.left = '-300px'; // Slide the window out
+        });
+
+        // Game logic
         const higherButton = document.getElementById('higher-button');
         const lowerButton = document.getElementById('lower-button');
         const scoreElement = document.getElementById('score');
         const leftObject = document.getElementById('left-object');
         const rightObject = document.getElementById('right-object');
+        const leftEmoji = document.getElementById('left-emoji');
+        const rightEmoji = document.getElementById('right-emoji');
         const category = document.getElementById('category');
 
         function updateGame(data) {
             leftObject.textContent = data.game_data.item1;
             rightObject.textContent = data.game_data.item2;
+            leftEmoji.textContent = data.game_data.emoji1;
+            rightEmoji.textContent = data.game_data.emoji2;
             category.textContent = "Category: " + data.game_data.unit;
             scoreElement.textContent = data.score;
+        }
+
+        function showGameOver() {
+            gameOverOverlay.style.display = 'flex';
+        }
+
+        function hideGameOver() {
+            gameOverOverlay.style.display = 'none';
+            location.reload(); // Refresh the page
         }
 
         higherButton.addEventListener('click', () => {
@@ -45,7 +95,13 @@
                 body: JSON.stringify({ choice: 'higher' })
             })
                 .then(response => response.json())
-                .then(data => updateGame(data));
+                .then(data => {
+                    if (!data.correct) {
+                        showGameOver();
+                    } else {
+                        updateGame(data);
+                    }
+                });
         });
 
         lowerButton.addEventListener('click', () => {
@@ -55,9 +111,17 @@
                 body: JSON.stringify({ choice: 'lower' })
             })
                 .then(response => response.json())
-                .then(data => updateGame(data));
+                .then(data => {
+                    if (!data.correct) {
+                        showGameOver();
+                    } else {
+                        updateGame(data);
+                    }
+                });
         });
-        //Your modal Javascript.
+
+        playAgainButton.addEventListener('click', hideGameOver);
     </script>
+
 </body>
 </html>

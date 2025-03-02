@@ -66,7 +66,7 @@ def generate_game_data():
     global game_data
     response = client.models.generate_content(
         model="gemini-2.0-flash",
-        contents=f"Generate one example of specific {random.choice(item_list)} with a extremely accurate numerical attribute, make sure that the items are not the same, make sure they are the same units, provide the item and attribute's numerical value with consistent units, then state which attribute is being compared, do not add \"Here's an example\", \"Here's an example following your instructions\" or anything similar, do not use object A object B as examples, for numerical values do not add commas to seperate 100th places, do not add signs infront of numerical values, format the output as: \"object, value, object, value, Attribute\". Output should only be object, numerical value WITHOUT STATING THE UNIT RIGHT AFTER, unit, object, numerical value, unit, attribute. No answers like '76centimeters' is permitted. The numerical value MUST be separated from the unit by a comma. Furthermore, generate an emoji that would fit for object1, object2 in that order separated by commas and at the end of the list.",
+        contents=f"Generate one example of specific {random.choice(item_list)} with a extremely accurate numerical attribute, make sure that the items are not the same, make sure they are the same units, provide the item and attribute's numerical value with consistent units, then state which attribute is being compared, do not add \"Here's an example\", \"Here's an example following your instructions\" or anything similar, do not use object A object B as examples, for numerical values do not add commas to seperate 100th places, do not add signs infront of numerical values, Output should only be object, numerical value WITHOUT STATING THE UNIT RIGHT AFTER, unit, object, numerical value, unit, attribute. No answers like '76centimeters' is permitted. The numerical value MUST be separated from the unit by a comma. Furthermore, generate an emoji that would fit for object1, object2 in that order separated by commas added to the list with the same format on one line, format the output as: \"object, value, object, value, attribute, emoji, emoji\" all on one line.  ",
     )
     data = response.text.split(',')
     game_data = {
@@ -75,10 +75,12 @@ def generate_game_data():
         "unit": data[2],
         "item2": data[3],
         "value2": float(data[4]),
-        "attribute": data[5],
-        "emoji1": "🔴",
-        "emoji2": data[7]
+        "unit2": data[5],
+        "attribute": data[6],
+        "emoji1": data[7],
+        "emoji2": data[8]
     }
+    print(data[6])
 
 @app.route('/')
 def index():
