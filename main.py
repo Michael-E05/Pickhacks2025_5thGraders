@@ -3,7 +3,7 @@ from google import genai
 
 import random
 
-client = genai.Client(api_key="AIzaSyDv7V8-wQHzLuUYkPuSdh0itkkRzPpcdqo")
+client = genai.Client(api_key="Inerst-API-Key-Here")
 
 item_list = [
     "food",
