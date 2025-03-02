@@ -4,6 +4,10 @@ Hello! Thank you for testing our silly code!
 Instructions for installation:
 0. For this example, we used the Windows version of VSCode.
 
+0.5. This git repository must be installed as a whole for the program to run. Click on the green "Code" button from the respository's website and then select "Download as ZIP". 
+     Once the folder is downloaded, find it in your file explorer and then right click and select "Extract All"
+     Once the prior steps are done, run HOLGame.py
+
 1. Install listed libraries with the following commands:
   pip install google
 
